@@ -37,8 +37,10 @@ function main() {
 				finger: ['assets/tunnel.png'],
 				fence: ['assets/fences.png'],
 				daybg: ['assets/_day.png'],
+				nightbg: ['assets/_night.png'],
 				gameOverText: ['assets/gameover.png'],
 				getReady: ['assets/getready.png'],
+				board: ['assets/board.png'],
 				tuto: ['assets/tuto.png']
 			},
 			audio: {
@@ -67,14 +69,17 @@ function main() {
 		scoreText,
 		instText,
 		gameOverText,
+		gameOverScore,
 		flapSnd,
 		scoreSnd,
 		hurtSnd,
 		fingersTimer,
 		cloudsTimer,
-		dayBg,
+		dnBg,
 		gameOverT,
 		getReady,
+		gameOverScore,
+		board,
 		tuto;
 
 	function create() {
@@ -83,13 +88,15 @@ function main() {
 		var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
 		game.world.width = screenWidth;
 		game.world.height = screenHeight;
-		// Draw bg
-		bg = game.add.graphics(0, 0);
-		bg.beginFill(0xDDEEFF, 1);
-		bg.drawRect(0, 0, game.world.width, game.world.height);
-		bg.endFill();
 		// Add Day Background
-		dayBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'daybg');
+		var hr = (new Date()).getHours();
+		if((hr >= 7) && (hr <= 17)){
+			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'daybg');
+		}
+		else{
+			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'nightbg');
+		}
+		
 		// Credits 'yo
 		credits = game.add.text(
 			game.world.width / 2,
@@ -118,8 +125,6 @@ function main() {
 		// Add fence
 		fence = game.add.tileSprite(0, game.world.height - 32, game.world.width, 32, 'fence');
 		fence.tileScale.setTo(1, 1);
-		// Add Day Background
-		//dayBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'daybg');
 		// Add score text
 		scoreText = game.add.text(
 			game.world.width / 2,
@@ -148,22 +153,38 @@ function main() {
 			}
 		);
 		instText.anchor.setTo(0.5, 0.5);
+		gameOverT = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 80, 192, 50, 'gameOverText');
+		board = game.add.tileSprite((game.world.width / 2) - 116,(game.world.height / 2) - 20, 233, 117, 'board');
+		getReady = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 180, 192, 50, 'getReady');
+		tuto = game.add.tileSprite((game.world.width / 2) - 70,(game.world.height / 2) - 120, 119, 102, 'tuto');
+		
 		// Add game over text
 		gameOverText = game.add.text(
-			game.world.width / 2,
-			game.world.height / 2,
+			game.world.width / 2 + 73,
+			game.world.height / 2 + 70,
 			"",
 			{
-				font: '14px "Press Start 2P"',
+				font: '8px "Press Start 2P"',
 				fill: '#fff',
 				stroke: '#000',
-				strokeThickness: 4,
+				strokeThickness: 1,
 				align: 'center'
 			}
 		);
-		gameOverT = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 80, 192, 50, 'gameOverText');
-		getReady = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 180, 192, 50, 'getReady');
-		tuto = game.add.tileSprite((game.world.width / 2) - 70,(game.world.height / 2) - 120, 119, 102, 'tuto');
+		// Add game over text
+		gameOverScore = game.add.text(
+			game.world.width / 2 + 73,
+			game.world.height / 2 + 27,
+			"",
+			{
+				font: '8px "Press Start 2P"',
+				fill: '#fff',
+				stroke: '#000',
+				strokeThickness: 1,
+				align: 'center'
+			}
+		);
+
 		gameOverText.anchor.setTo(0.5, 0.5);
 		gameOverText.scale.setTo(2, 2);
 		// Add sounds
@@ -183,14 +204,13 @@ function main() {
 
 	function reset() {
 		gameStarted = false;
-		//getReady.renderable = true;
 		gameOver = false;
 		score = 0;
 		credits.renderable = true;
-		//scoreText.setText("Flappy Birds");
-		//instText.setText("TOUCH TO FLAP\nBIRDIE WINGS");
 		gameOverT.renderable = false;
+		board.renderable = false;
 		gameOverText.renderable = false;
+		gameOverScore.renderable = false;
 		birdie.body.allowGravity = false;
 		birdie.angle = 0;
 		birdie.reset(game.world.width / 4, game.world.height / 2);
@@ -202,6 +222,7 @@ function main() {
 
 	function start() {
 		gameOverT.renderable = false;
+		board.renderable = false;
 		credits.renderable = false;
 		birdie.body.allowGravity = true;
 		// SPAWN FINGERS!
@@ -223,8 +244,8 @@ function main() {
 			start();
 		}
 		if (!gameOver) {
-			flapSnd.play();
 			birdie.body.velocity.y = -FLAP;
+			flapSnd.play();
 			
 		}
 	}
@@ -301,15 +322,19 @@ function main() {
 /* ********************** Game over ******************************* */
 	function setGameOver() {
 		gameOver = true;
-		instText.setText("TOUCH BIRDIE\nTO TRY AGAIN");
-		instText.renderable = true;
 		var hiscore = window.localStorage.getItem('hiscore');
 		hiscore = hiscore ? hiscore : score;
 		hiscore = score > parseInt(hiscore, 10) ? score : hiscore;
 		window.localStorage.setItem('hiscore', hiscore);
 		gameOverT.renderable = true;
-		gameOverText.setText("\n\nHIGH SCORE\n" + hiscore);
+		board.renderable = true;
+		gameOverText.setText(hiscore);
 		gameOverText.renderable = true;
+		
+		gameOverScore.anchor.setTo(0.5, 0.5);
+		gameOverScore.scale.setTo(2, 2);
+		gameOverScore.setText(score);
+		gameOverScore.renderable = true;
 		// Stop all fingers
 		fingers.forEachAlive(function(finger) {
 			finger.body.velocity.x = 0;
@@ -348,9 +373,6 @@ function main() {
 				if (birdie.scale.x < 4) {
 					birdie.scale.setTo(1.5, 1.5);
 				}
-				// Shake game over text
-				gameOverText.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
-				gameOverT.angle = Math.random() * 5 * Math.cos(game.time.now / 100);
 			} else {
 				// Check game over
 				game.physics.overlap(birdie, fingers, setGameOver);
@@ -391,10 +413,10 @@ function main() {
 				cloud.kill();
 			}
 		});
-		// Scroll fence and bg
+		// Scroll fence and background
 		if (!gameOver) {
 			fence.tilePosition.x -= game.time.physicsElapsed * SPEED / 2;
-			dayBg.tilePosition.x -= game.time.physicsElapsed * SPEED / 8;
+			dnBg.tilePosition.x -= game.time.physicsElapsed * SPEED / 8;
 			
 			
 			
