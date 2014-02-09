@@ -1,7 +1,7 @@
 var DEBUG = false;
 var SPEED = 350;
 var GRAVITY = 40;
-var FLAP = 620;
+var FLAP = 640;
 var SPAWN_RATE = 1 / 1;
 var OPENING = 134;
 
@@ -263,7 +263,7 @@ function main() {
 		finger.body.allowGravity = false;
 
 		// Flip finger! *GASP*
-		finger.scale.setTo(2, flipped ? -2 : 2);
+		finger.scale.setTo(1.5, flipped ? -2 : 2);
 		finger.body.offset.y = flipped ? -finger.body.height * 2 : 0;
 
 		// Move to the left
@@ -394,7 +394,7 @@ function main() {
 		// Scroll fence and bg
 		if (!gameOver) {
 			fence.tilePosition.x -= game.time.physicsElapsed * SPEED / 2;
-			dayBg.tilePosition.x -= game.time.physicsElapsed * SPEED / 2;
+			dayBg.tilePosition.x -= game.time.physicsElapsed * SPEED / 8;
 			
 			
 			
