@@ -1,0 +1,20 @@
+body {
+	background: #DED896;
+	margin: 0;
+	padding: 0;
+	font-family: 'Press Start 2P';
+}
+#screen {
+	margin: 0 auto;
+	max-height:500px;
+	max-width:500px;
+	position: relative;
+	overflow: hidden;
+
+}
+@font-face {
+  font-family: 'Press Start 2P';
+  font-style: normal;
+  font-weight: 400;
+  src: url('PressStart2P-Regular.ttf');
+}

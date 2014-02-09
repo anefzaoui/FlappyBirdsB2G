@@ -1,0 +1,21 @@
+{
+  "name": "Flappy Birds",
+  "description": "Unofficial Port of Flappy Birds to Firefox OS",
+  "launch_path": "/index.html",
+  "version": "0.1.0",
+  "icons": {
+    "60": "/style/icons/icon_60.png",
+	"90": "/style/icons/icon_90.png",
+	"120": "/style/icons/icon_120.png",
+	"128": "/style/icons/icon_128.png",
+	"256": "/style/icons/icon_256.png",
+	"300": "/style/icons/icon_300.png"
+  },
+  "developer": {
+    "name": "Ahmed Nefzaoui",
+    "url": "http://anefzaoui.blogspot.com"
+  },
+  "default_locale": "en",
+  "fullscreen": "true",
+  "orientation": "portrait-primary"
+}
