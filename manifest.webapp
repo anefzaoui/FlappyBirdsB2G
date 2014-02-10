@@ -1,8 +1,8 @@
 {
   "name": "Flappy Birds",
-  "description": "Flappy Birds port to Firefox OS",
+  "description": "Flappy Birds for Firefox OS, formerly Flappy Bird",
   "launch_path": "/index.html",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "icons": {
     "60": "/style/icons/icon_60.png",
 	"90": "/style/icons/icon_90.png",

@@ -9,10 +9,10 @@ var OPENING = 100;
 function main() {
 
 	var state = {
-		preload: preload,
-		create: create,
-		update: update,
-		render: render
+		preload	: preload,
+		create	: create,
+		update	: update,
+		render	: render
 	};
 
 	var parent = document.querySelector('#screen');
@@ -30,24 +30,23 @@ function main() {
 	function preload() {
 		var assets = {
 			spritesheet: {
-				birdie: ['assets/movingbirdie.png', 34, 32],
-				clouds: ['assets/clouds.png', 128, 64]
+				birdie	: ['assets/movingbirdie.png', 34, 32]
 			},
 			image: {
-				finger: ['assets/tunnel.png'],
-				redfinger: ['assets/shitjustgotreal.png'],
-				fence: ['assets/fences.png'],
-				daybg: ['assets/day.png'],
-				nightbg: ['assets/night.png'],
+				finger		: ['assets/tunnel.png'],
+				redfinger	: ['assets/shitjustgotreal.png'],
+				fence		: ['assets/fences.png'],
+				daybg		: ['assets/day.png'],
+				nightbg		: ['assets/night.png'],
 				gameOverText: ['assets/gameover.png'],
-				getReady: ['assets/getready.png'],
-				board: ['assets/board.png'],
-				tuto: ['assets/tuto.png']
+				getReady	: ['assets/getready.png'],
+				board		: ['assets/board.png'],
+				tuto		: ['assets/tuto.png']
 			},
 			audio: {
-				flap: ['assets/res/sfx_wing.ogg'],
-				score: ['assets/res/sfx_point.ogg'],
-				hurt: ['assets/res/sfx_hit.ogg']
+				flap	: ['assets/res/sfx_wing.mp3'],
+				score	: ['assets/res/sfx_point.ogg'],
+				hurt	: ['assets/res/sfx_hit.mp3']
 			}
 		};
 		Object.keys(assets).forEach(function(type) {
@@ -60,22 +59,18 @@ function main() {
 	var gameStarted,
 		gameOver,
 		score,
-		bg,
-		credits,
-		clouds,
+		bg,		
 		fingers,
 		invs,
 		birdie,
 		fence,
 		scoreText,
-		instText,
 		gameOverText,
 		gameOverScore,
 		flapSnd,
 		scoreSnd,
 		hurtSnd,
 		fingersTimer,
-		cloudsTimer,
 		dnBg,
 		gameOverT,
 		getReady,
@@ -91,49 +86,29 @@ function main() {
 		var screenWidth = window.innerWidth;
 		//var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
 		var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
-		landscape = false;
-		if(screenWidth > screenHeight)
-		landscape = true;
-		
-		game.world.width = screenWidth;
-		game.world.height = screenHeight;
+		game.world.width	= screenWidth;
+		game.world.height	= screenHeight;
 		// Add Day Background
 		var hr = (new Date()).getHours();
-		if((hr >= 7) && (hr <= 17)){
+		if((hr >= 7) && (hr <= 18)){
 			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'daybg');
 		}
 		else{
 			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'nightbg');
 		}
-		
-		// Credits 'yo
-		credits = game.add.text(
-			game.world.width / 2,
-			10,
-			'',
-			{
-				font: '8px "Press Start 2P"',
-				fill: '#fff',
-				align: 'center'
-			}
-		);
-		credits.anchor.x = 0.5;
-		// Add clouds group
-		clouds = game.add.group();
 		// Add fingers
-		fingers = game.add.group();
+		fingers	= game.add.group();
 		// Add invisible thingies
-		invs = game.add.group();
+		invs	= game.add.group();
 		// Add birdie
-		birdie = game.add.sprite(0, 0, 'birdie');
+		birdie	= game.add.sprite(0, 0, 'birdie');
 		birdie.anchor.setTo(0.5, 0.5);
 		birdie.animations.add('fly', [0, 1, 2], 10, true);
-		birdie.inputEnabled = true;
-		birdie.body.collideWorldBounds = true;
-		birdie.body.gravity.y = GRAVITY;
+		birdie.inputEnabled				= true;
+		birdie.body.collideWorldBounds	= true;
+		birdie.body.gravity.y			= GRAVITY;
 		// Add fence
 		fence = game.add.tileSprite(0, game.world.height - 32, game.world.width, 32, 'fence');
-		fence.tileScale.setTo(1, 1);
 		// Add score text
 		scoreText = game.add.text(
 			game.world.width / 2,
@@ -148,24 +123,11 @@ function main() {
 			}
 		);
 		scoreText.anchor.setTo(0.5, 0.5);
-		// Add instructions text
-		instText = game.add.text(
-			game.world.width / 2,
-			game.world.height - game.world.height / 4,
-			"",
-			{
-				font: '8px "Press Start 2P"',
-				fill: '#fff',
-				stroke: '#000',
-				strokeThickness: 4,
-				align: 'center'
-			}
-		);
-		instText.anchor.setTo(0.5, 0.5);
-		gameOverT = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 80, 192, 50, 'gameOverText');
-		board = game.add.tileSprite((game.world.width / 2) - 116,(game.world.height / 2) - 20, 233, 117, 'board');
-		getReady = game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 180, 192, 50, 'getReady');
-		tuto = game.add.tileSprite((game.world.width / 2) - 70,(game.world.height / 2) - 120, 119, 102, 'tuto');
+		
+		gameOverT	= game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 80, 192, 50, 'gameOverText');
+		board 		= game.add.tileSprite((game.world.width / 2) - 116,(game.world.height / 2) - 20, 233, 117, 'board');
+		getReady	= game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 180, 192, 50, 'getReady');
+		tuto		= game.add.tileSprite((game.world.width / 2) - 70,(game.world.height / 2) - 120, 119, 102, 'tuto');
 		
 		// Add game over text
 		gameOverText = game.add.text(
@@ -202,25 +164,22 @@ function main() {
 		hurtSnd = game.add.audio('hurt');
 		// Add controls
 		game.input.onDown.add(flap);
-		// Start clouds timer
-		cloudsTimer = new Phaser.Timer(game);
-		cloudsTimer.onEvent.add(spawnCloud);
-		cloudsTimer.start();
-		cloudsTimer.add(Math.random());
 		// RESET!
 		reset();
 	}
 
 	function reset() {
 		gameStarted = false;
-		gameOver = false;
+		gameOver 	= false;
 		score = 0;
-		credits.renderable = true;
-		gameOverT.renderable = false;
-		board.renderable = false;
-		gameOverText.renderable = false;
-		gameOverScore.renderable = false;
-		birdie.body.allowGravity = false;
+		
+		
+		gameOverT.renderable 		= false;
+		board.renderable 			= false;
+		gameOverText.renderable 	= false;
+		gameOverScore.renderable 	= false;
+		birdie.body.allowGravity 	= false;
+		
 		birdie.angle = 0;
 		birdie.reset(game.world.width / 4, game.world.height / 2);
 		birdie.scale.setTo(1, 1);
@@ -230,10 +189,7 @@ function main() {
 	}
 
 	function start() {
-		gameOverT.renderable = false;
-		board.renderable = false;
-		credits.renderable = false;
-		birdie.body.allowGravity = true;
+		
 		// SPAWN FINGERS!
 		fingersTimer = new Phaser.Timer(game);
 		fingersTimer.onEvent.add(spawnFingers);
@@ -241,9 +197,13 @@ function main() {
 		fingersTimer.add(1);
 		// Show score
 		scoreText.setText(score);
-		instText.renderable = false;
-		getReady.renderable = false;
-		tuto.renderable = false;
+		
+		gameOverT.renderable 		= false;
+		board.renderable 			= false;
+		birdie.body.allowGravity 	= true;
+		getReady.renderable 		= false;
+		tuto.renderable 			= false;
+		
 		// START!
 		gameStarted = true;
 	}
@@ -255,29 +215,7 @@ function main() {
 		if (!gameOver) {
 			birdie.body.velocity.y = -FLAP;
 			flapSnd.play();
-			
 		}
-	}
-
-	function spawnCloud() {
-		cloudsTimer.stop();
-
-		var cloudY = Math.random() * game.height / 2;
-		var cloud = clouds.create(
-			game.width,
-			cloudY,
-			'clouds',
-			Math.floor(4 * Math.random())
-		);
-		var cloudScale = 2 + 2 * Math.random();
-		cloud.alpha = 2 / cloudScale;
-		cloud.scale.setTo(cloudScale, cloudScale);
-		cloud.body.allowGravity = false;
-		cloud.body.velocity.x = -SPEED / cloudScale;
-		cloud.anchor.y = 0;
-
-		cloudsTimer.start();
-		cloudsTimer.add(4 * Math.random());
 	}
 
 	function o() {
@@ -307,12 +245,7 @@ function main() {
 	function spawnFingers() {
 		fingersTimer.stop();
 		var fingerYhValue = 16;
-		var openingY = o();
-		if(landscape && (game.world.height<360)){
-			fingerYhValue = 186;
-			openingY = 10;
-		}
-		
+		var openingY = o();		
 		var fingerY = ((game.height - fingerYhValue - openingY / 2) / 2) + (Math.random() > 0.5 ? -1 : 1) * Math.random() * game.height / 8;
 		
 		// Bottom finger
@@ -375,11 +308,7 @@ function main() {
 			if (birdie.angle < -30) {
 				birdie.angle = -30;
 			}
-			if (
-				gameOver ||
-				birdie.angle > 90 ||
-				birdie.angle < -90
-			) {
+			if (gameOver || birdie.angle > 90 || birdie.angle < -90) {
 				birdie.angle = 90;
 				birdie.animations.stop();
 				birdie.frame = 3;
@@ -411,26 +340,6 @@ function main() {
 		} else {
 			birdie.y = (game.world.height / 2) + 8 * Math.cos(game.time.now / 200);
 		}
-		if (!gameStarted || gameOver) {
-			// Shake instructions text
-			instText.scale.setTo(
-				2 + 0.1 * Math.sin(game.time.now / 100),
-				2 + 0.1 * Math.cos(game.time.now / 100)
-			);
-		}
-		// Shake score text
-		scoreText.scale.setTo(
-			2 + 0.1 * Math.cos(game.time.now / 100),
-			2 + 0.1 * Math.sin(game.time.now / 100)
-		);
-		// Update clouds timer
-		cloudsTimer.update();
-		// Remove offscreen clouds
-		clouds.forEachAlive(function(cloud) {
-			if (cloud.x + cloud.width < game.world.bounds.left) {
-				cloud.kill();
-			}
-		});
 		// Scroll fence and background
 		if (!gameOver) {
 			fence.tilePosition.x -= game.time.physicsElapsed * SPEED / 2;
