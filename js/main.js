@@ -82,7 +82,8 @@ function main() {
 		gameOverScore,
 		board,
 		tunnel,
-		tuto;
+		tuto,
+		ladscape;
 
 	function create() {
 		// Set world dimensions
@@ -90,6 +91,10 @@ function main() {
 		var screenWidth = window.innerWidth;
 		//var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
 		var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
+		landscape = false;
+		if(screenWidth > screenHeight)
+		landscape = true;
+		
 		game.world.width = screenWidth;
 		game.world.height = screenHeight;
 		// Add Day Background
@@ -301,8 +306,15 @@ function main() {
 
 	function spawnFingers() {
 		fingersTimer.stop();
-
-		var fingerY = ((game.height - 16 - o() / 2) / 2) + (Math.random() > 0.5 ? -1 : 1) * Math.random() * game.height / 8;
+		var fingerYhValue = 16;
+		var openingY = o();
+		if(landscape && (game.world.height<360)){
+			fingerYhValue = 186;
+			openingY = 10;
+		}
+		
+		var fingerY = ((game.height - fingerYhValue - openingY / 2) / 2) + (Math.random() > 0.5 ? -1 : 1) * Math.random() * game.height / 8;
+		
 		// Bottom finger
 		var botFinger = spawnFinger(fingerY);
 		// Top finger (flipped)
@@ -443,7 +455,7 @@ window.addEventListener('load', function readerOnLoad(evt) {
   window.removeEventListener('load', readerOnLoad);
   var cnx = document.getElementById('screen');
   cnx.style.maxWidth= window.innerWidth;
-  if(window.innerHeight<=500)
+  if(window.innerHeight<=420)
 	cnx.style.maxHeight= (window.innerHeight) + "px";
   else
 	cnx.style.maxHeight= (window.innerHeight - 100) + "px";

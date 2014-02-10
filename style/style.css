@@ -1,8 +1,16 @@
+@font-face {
+	font-family: 'Press Start 2P';
+	font-style: normal;
+	font-weight: 400;
+	src: url('PressStart2P-Regular.ttf');
+}
+
 body {
 	background: #DED896;
 	margin: 0;
 	padding: 0;
 	font-family: 'Press Start 2P';
+	overflow: hidden;
 }
 #screen {
 	margin: 0 auto;
@@ -11,10 +19,4 @@ body {
 	position: relative;
 	overflow: hidden;
 
-}
-@font-face {
-  font-family: 'Press Start 2P';
-  font-style: normal;
-  font-weight: 400;
-  src: url('PressStart2P-Regular.ttf');
 }
