@@ -1,9 +1,9 @@
 var DEBUG = false;
-var SPEED = 350;
-var GRAVITY = 40;
-var FLAP = 640;
+var SPEED = 250;
+var GRAVITY = 15;
+var FLAP = 300;
 var SPAWN_RATE = 1 / 1;
-var OPENING = 134;
+var OPENING = 100;
 
 
 function main() {
@@ -35,6 +35,7 @@ function main() {
 			},
 			image: {
 				finger: ['assets/tunnel.png'],
+				redfinger: ['assets/shitjustgotreal.png'],
 				fence: ['assets/fences.png'],
 				daybg: ['assets/_day.png'],
 				nightbg: ['assets/_night.png'],
@@ -80,6 +81,7 @@ function main() {
 		getReady,
 		gameOverScore,
 		board,
+		tunnel,
 		tuto;
 
 	function create() {
@@ -229,7 +231,7 @@ function main() {
 		fingersTimer = new Phaser.Timer(game);
 		fingersTimer.onEvent.add(spawnFingers);
 		fingersTimer.start();
-		fingersTimer.add(2);
+		fingersTimer.add(1);
 		// Show score
 		scoreText.setText(score);
 		instText.renderable = false;
@@ -276,10 +278,12 @@ function main() {
 	}
 
 	function spawnFinger(fingerY, flipped) {
+		var tunnel = "finger";
+		if (score>=15) tunnel = "redfinger";
 		var finger = fingers.create(
 			game.width,
 			fingerY + (flipped ? -o() : o()) / 2,
-			'finger'
+			tunnel
 		);
 		finger.body.allowGravity = false;
 
@@ -288,7 +292,7 @@ function main() {
 		finger.body.offset.y = flipped ? -finger.body.height * 2 : 0;
 
 		// Move to the left
-		finger.body.velocity.x = -SPEED+10;
+		finger.body.velocity.x = -SPEED+5;
 
 		return finger;
 	}
