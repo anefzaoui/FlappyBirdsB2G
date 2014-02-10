@@ -6,8 +6,8 @@ body {
 }
 #screen {
 	margin: 0 auto;
-	max-height:500px;
-	max-width:1000px;
+	//max-height:500px;
+	//max-width:1000px;
 	position: relative;
 	overflow: hidden;
 

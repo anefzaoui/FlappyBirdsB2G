@@ -1,7 +1,7 @@
 var DEBUG = false;
 var SPEED = 250;
-var GRAVITY = 20;
-var FLAP = 300;
+var GRAVITY = 13;
+var FLAP = 230;
 var SPAWN_RATE = 1 / 1;
 var OPENING = 100;
 
@@ -86,7 +86,9 @@ function main() {
 
 	function create() {
 		// Set world dimensions
-		var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
+		//var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
+		var screenWidth = window.innerWidth;
+		//var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
 		var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
 		game.world.width = screenWidth;
 		game.world.height = screenHeight;
@@ -292,7 +294,7 @@ function main() {
 		finger.body.offset.y = flipped ? -finger.body.height * 2 : 0;
 
 		// Move to the left
-		finger.body.velocity.x = -SPEED+5;
+		finger.body.velocity.x = -SPEED;
 
 		return finger;
 	}
@@ -300,7 +302,7 @@ function main() {
 	function spawnFingers() {
 		fingersTimer.stop();
 
-		var fingerY = ((game.height - 16 - o() / 2) / 2) + (Math.random() > 0.5 ? -1 : 1) * Math.random() * game.height / 6;
+		var fingerY = ((game.height - 16 - o() / 2) / 2) + (Math.random() > 0.5 ? -1 : 1) * Math.random() * game.height / 8;
 		// Bottom finger
 		var botFinger = spawnFinger(fingerY);
 		// Top finger (flipped)
@@ -420,10 +422,6 @@ function main() {
 		// Scroll fence and background
 		if (!gameOver) {
 			fence.tilePosition.x -= game.time.physicsElapsed * SPEED / 2;
-			dnBg.tilePosition.x -= game.time.physicsElapsed * SPEED / 8;
-			
-			
-			
 		}
 	}
 
@@ -443,5 +441,11 @@ function main() {
 
 window.addEventListener('load', function readerOnLoad(evt) {
   window.removeEventListener('load', readerOnLoad);
+  var cnx = document.getElementById('screen');
+  cnx.style.maxWidth= window.innerWidth;
+  if(window.innerHeight<=500)
+	cnx.style.maxHeight= (window.innerHeight) + "px";
+  else
+	cnx.style.maxHeight= (window.innerHeight - 100) + "px";
   main();  
 });
