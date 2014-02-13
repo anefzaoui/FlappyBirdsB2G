@@ -30,7 +30,8 @@ function main() {
 	function preload() {
 		var assets = {
 			spritesheet: {
-				birdie	: ['assets/movingbirdie.png', 34, 32]
+				birdie	: ['assets/movingbirdie.png', 34, 32],
+				play	: ['assets/play.png', 114, 70]
 			},
 			image: {
 				finger		: ['assets/tunnel.png'],
@@ -38,6 +39,7 @@ function main() {
 				fence		: ['assets/fences.png'],
 				daybg		: ['assets/day.png'],
 				nightbg		: ['assets/night.png'],
+				foxBg		: ['assets/FXOS_Illus_Mountains.jpg'],
 				gameOverText: ['assets/gameover.png'],
 				getReady	: ['assets/getready.png'],
 				board		: ['assets/board.png'],
@@ -78,24 +80,26 @@ function main() {
 		board,
 		tunnel,
 		tuto,
-		ladscape;
+		foxbg,
+		play;
 
 	function create() {
 		// Set world dimensions
-		//var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
-		var screenWidth = window.innerWidth;
-		//var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
+		var screenWidth = parent.clientWidth > window.innerWidth ? window.innerWidth : parent.clientWidth;
 		var screenHeight = parent.clientHeight > window.innerHeight ? window.innerHeight : parent.clientHeight;
+		
+		// Append them to world configurations
 		game.world.width	= screenWidth;
 		game.world.height	= screenHeight;
 		// Add Day Background
 		var hr = (new Date()).getHours();
 		if((hr >= 7) && (hr <= 18)){
-			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'daybg');
+			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height, 'daybg');
 		}
 		else{
 			dnBg = game.add.tileSprite(0, 0, game.world.width, game.world.height - 32, 'nightbg');
 		}
+		console.log(game.world.width);
 		// Add fingers
 		fingers	= game.add.group();
 		// Add invisible thingies
@@ -128,6 +132,12 @@ function main() {
 		board 		= game.add.tileSprite((game.world.width / 2) - 116,(game.world.height / 2) - 20, 233, 117, 'board');
 		getReady	= game.add.tileSprite((game.world.width / 2) - 98,(game.world.height / 2) - 180, 192, 50, 'getReady');
 		tuto		= game.add.tileSprite((game.world.width / 2) - 70,(game.world.height / 2) - 120, 119, 102, 'tuto');
+		// Add replay button
+		play = game.add.sprite((game.world.width / 2) - (114 / 2), (game.world.height / 2) + 100, 'play');
+		//play = game.load.spritesheet('button', 'assets/buttons/button_sprite_sheet.png', 193, 71);
+		//play = game.add.button(game.world.centerX - 57, game.world.centerY + 100, 'play', reset);
+
+		play.inputEnabled	= true;
 		
 		// Add game over text
 		gameOverText = game.add.text(
@@ -175,8 +185,10 @@ function main() {
 		
 		
 		gameOverT.renderable 		= false;
+		play.renderable 			= false;
 		board.renderable 			= false;
 		gameOverText.renderable 	= false;
+		play.renderable 			= false;
 		gameOverScore.renderable 	= false;
 		birdie.body.allowGravity 	= false;
 		
@@ -199,6 +211,7 @@ function main() {
 		scoreText.setText(score);
 		
 		gameOverT.renderable 		= false;
+		play.renderable 			= false;
 		board.renderable 			= false;
 		birdie.body.allowGravity 	= true;
 		getReady.renderable 		= false;
@@ -277,15 +290,19 @@ function main() {
 		hiscore = hiscore ? hiscore : score;
 		hiscore = score > parseInt(hiscore, 10) ? score : hiscore;
 		window.localStorage.setItem('hiscore', hiscore);
-		gameOverT.renderable = true;
-		board.renderable = true;
+		
+		gameOverT.renderable		= true;
+		play.renderable 			= true;
+		board.renderable			= true;
+		gameOverText.renderable 	= true;
+		gameOverScore.renderable	= true;
 		gameOverText.setText(hiscore);
-		gameOverText.renderable = true;
+		
 		
 		gameOverScore.anchor.setTo(0.5, 0.5);
 		gameOverScore.scale.setTo(2, 2);
 		gameOverScore.setText(score);
-		gameOverScore.renderable = true;
+		
 		// Stop all fingers
 		fingers.forEachAlive(function(finger) {
 			finger.body.velocity.x = 0;
@@ -295,9 +312,8 @@ function main() {
 		});
 		// Stop spawning fingers
 		fingersTimer.stop();
-		// Make birdie reset the game
-		birdie.events.onInputDown.addOnce(reset);
 		hurtSnd.play();
+		play.events.onInputDown.addOnce(reset);
 	}
 
 	function update() {
@@ -311,7 +327,7 @@ function main() {
 			if (gameOver || birdie.angle > 90 || birdie.angle < -90) {
 				birdie.angle = 90;
 				birdie.animations.stop();
-				birdie.frame = 3;
+				birdie.frame = 2;
 			} else {
 				birdie.animations.play('fly');
 			}
@@ -362,11 +378,5 @@ function main() {
 
 window.addEventListener('load', function readerOnLoad(evt) {
   window.removeEventListener('load', readerOnLoad);
-  var cnx = document.getElementById('screen');
-  cnx.style.maxWidth= window.innerWidth;
-  if(window.innerHeight<=420)
-	cnx.style.maxHeight= (window.innerHeight) + "px";
-  else
-	cnx.style.maxHeight= (window.innerHeight - 100) + "px";
-  main();  
+  main();
 });
