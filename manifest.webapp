@@ -5,11 +5,11 @@
   "version": "0.1.3",
   "icons": {
     "60": "/style/icons/icon_60.png",
-	"90": "/style/icons/icon_90.png",
-	"120": "/style/icons/icon_120.png",
-	"128": "/style/icons/icon_128.png",
-	"256": "/style/icons/icon_256.png",
-	"300": "/style/icons/icon_300.png"
+    "90": "/style/icons/icon_90.png",
+    "120": "/style/icons/icon_120.png",
+    "128": "/style/icons/icon_128.png",
+    "256": "/style/icons/icon_256.png",
+    "300": "/style/icons/icon_300.png"
   },
   "developer": {
     "name": "Ahmed Nefzaoui",
@@ -17,5 +17,15 @@
   },
   "default_locale": "en",
   "fullscreen": "true",
-  "orientation": "portrait-primary"
+  "orientation": "portrait-primary",
+  "locales": {
+    "eo": {
+      "name": "Flappy Birds",
+      "description": "Flappy Bird por Firefox OS."
+    },
+    "it": {
+      "name": "Flappy Birds",
+      "description": "Flappy Bird per Firefox OS."
+    }
+  }
 }
