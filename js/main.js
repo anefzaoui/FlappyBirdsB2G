@@ -374,7 +374,7 @@ function main() {
 		}
 	}
 
-};
+}
 
 window.addEventListener('load', function readerOnLoad(evt) {
   window.removeEventListener('load', readerOnLoad);
